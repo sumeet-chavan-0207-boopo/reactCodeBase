@@ -12,6 +12,7 @@ import { withRouter } from "react-router-dom";
             user_pass:'',
             name_error:'',
             pass_error:'',
+            auth_error:false,
         }
     }
     handleUserName=(event)=>{
@@ -43,9 +44,23 @@ import { withRouter } from "react-router-dom";
               })
         }
         else{
-            fakeAuth.authenticate(()=>{
-                this.props.history.push('/home')
+
+
+            this.setState({
+                name_error:'',
+                pass_error:''
             });
+
+            fakeAuth.authenticate((isPassed)=>{
+                console.log("hello")
+                if(isPassed){
+                    this.props.history.push('/home')
+                }else{
+                    this.setState({
+                        auth_error:true
+                    })
+                }   
+            },user_name,user_pass);
         }
 
     }
@@ -57,17 +72,26 @@ import { withRouter } from "react-router-dom";
                 <div className={classes.container}>
                    
                    <div className={classes.signin_label}>Signin</div>
+
+                    {
+                        this.state.auth_error?
+                        <div className="error_section">Username or password is incorrect</div>
+                        :
+                        ''
+                    }
+                    
+
                     <input className={classes.input_login} type="text" onChange={this.handleUserName} 
                     placeholder="Enter Username" name="uname" required/>
                     {this.state.name_error?
-                          <div>{this.state.name_error}</div>
+                          <div className="error_section">{this.state.name_error}</div>
                     :''}
                      
                  
                     <input className={classes.input_login} type="password" onChange={this.handleUserPass} 
                     placeholder="Enter Password" name="psw" required/>
                      {this.state.pass_error?
-                          <div>{this.state.pass_error}</div>
+                          <div className="error_section">{this.state.pass_error}</div>
                     :''}
                 
                     <button className={classes.login_button} onClick={this.handleLogin}  >Login</button>

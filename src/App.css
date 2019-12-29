@@ -27,6 +27,10 @@
 .App-link {
   color: #61dafb;
 }
+.error_section{
+  color: red;
+}
+
 
 @keyframes App-logo-spin {
   from {
@@ -36,3 +40,4 @@
     transform: rotate(360deg);
   }
 }
+

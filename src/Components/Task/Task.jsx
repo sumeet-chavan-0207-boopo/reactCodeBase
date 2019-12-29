@@ -61,7 +61,7 @@ export default function Task() {
 
     return (
         <div>
-            <div style={{height:'500px',overflowY:'scroll'}}>
+            <div style={{height:'500px',overflowY:'scroll',padding:'5%'}}>
                 <Table striped bordered hover>
                     <thead>
                         <tr>
