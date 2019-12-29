@@ -3,6 +3,7 @@ import classes from './Login.module.css';
 import validator from 'validator';
 import {fakeAuth} from '../../Auth/Auth';
 import { withRouter } from "react-router-dom";
+import { connect } from 'react-redux';
 
  class Login extends Component {
     constructor(props){
@@ -52,7 +53,7 @@ import { withRouter } from "react-router-dom";
             });
 
             fakeAuth.authenticate((isPassed)=>{
-                console.log("hello")
+               
                 if(isPassed){
                     this.props.history.push('/home')
                 }else{
