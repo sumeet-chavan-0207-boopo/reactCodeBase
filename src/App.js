@@ -3,25 +3,26 @@ import './App.css';
 import Login from './Components/Login/Login';
 import Dashboard from './Components/Dashboard/Dashboard';
 import {BrowserRouter,Route,Switch} from 'react-router-dom';
-import { createStore } from 'redux';
-import LoginReducer from './Reducers/LoginReducer'
+import { Provider } from 'react-redux';
+import store from './store';
 
 function App() {
 
-  const store=createStore(LoginReducer);
 
   return (
-    <BrowserRouter>
-    <Switch>
-      <Route exact path="/">
-        <Login />
-      </Route>
-      <Route exact path="*">
-         <Dashboard />
-      </Route>
-    
-    </Switch>  
-    </BrowserRouter>
+    <Provider store={store}> 
+      <BrowserRouter>
+      <Switch>
+        <Route exact path="/">
+          <Login />
+        </Route>
+        <Route exact path="*">
+          <Dashboard />
+        </Route>
+      
+      </Switch>  
+      </BrowserRouter>
+    </Provider>
   );
 }
 

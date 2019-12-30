@@ -1,4 +1,5 @@
-import React,{useEffect,useState} from 'react'
+import React,{useEffect,useState} from 'react';
+import {useSelector,useDispatch} from 'react-redux';
 import { Button } from 'react-bootstrap';
 import classes from './User.module.css';
 import validator from 'validator';
@@ -10,7 +11,8 @@ export default function User(props) {
     const [newPassword,setNewPassword]=useState('');
     const [passError,setPassError]=useState('');
     const [isPassChanged,setPassChangedMsg]=useState('');
-    
+    const user_details=useSelector(state=> state.login.user)
+   
 
     const handlePasswordChange=()=>{
 
@@ -32,7 +34,7 @@ export default function User(props) {
         <div style={{padding:'5%'}}>
             <div>
                 <div>
-                    Username:dummyname
+                    Username:{user_details.name}
                 </div>
              {!isChangePass?
                  <div>

@@ -1,32 +1,38 @@
 import React,{useEffect,useState} from 'react';
+import {useSelector,useDispatch} from 'react-redux';
 import { Button, Table } from 'react-bootstrap';
 import classes from  './Task.module.css';
+import {fetchPosts,addPost,deletePost} from '../../Actions/PostAction';
 
 export default function Task() {
 
     const [task_list,setTaskList]=useState([]);
     const [title_name,setTitleName]=useState([]);
     const [status,setStatus]=useState([]);
+    const posts=useSelector(state=> state.posts.items)
+    const dispatch=useDispatch();
+
 
 
     useEffect(()=>{
-        fetch('http://jsonplaceholder.typicode.com/todos').then(data=>data.json())
-        .then(datajson => {
-            setNewTaskList(datajson);
-        })
-        .catch(err=>console.log(err))
-
+         
+        if(!posts){
+            setNewTaskList(fetchPosts,'')
+        }
+        
+    
     },[]);
 
 
     const handleDeleteList=(list_id)=>{
-        const tasklist=task_list;
+        const tasklist=posts;
 
         const final_list= tasklist.filter(element=>{
             return element.id!=list_id;
         });
 
-        setNewTaskList(final_list);
+        setNewTaskList(deletePost,final_list)
+
     }
     const handleTitleChange=(event)=>{
         setTitleName(event.target.value);
@@ -38,7 +44,7 @@ export default function Task() {
     }
     const handleInsertion= ()=>{
         
-        const newtasklist=[...task_list];
+        const newtasklist=[...posts];
         const len=newtasklist.length;
         const last_id=newtasklist[len-1].id;
        
@@ -49,13 +55,17 @@ export default function Task() {
             completed:status
         }
 
-        newtasklist.push(new_task);    
-        setNewTaskList(newtasklist);
+
+        newtasklist.push(new_task); 
+        
+     
+        setNewTaskList(addPost,newtasklist)
 
     }
-    const setNewTaskList=(newtasklist)=>{
+    const setNewTaskList=(action_type,data)=>{
     
-        setTaskList(newtasklist);
+       
+        dispatch(action_type(data))
 
     }
 
@@ -73,7 +83,7 @@ export default function Task() {
                     </thead>
                     <tbody>
                     
-                       {task_list.map((ele,index)=>{
+                       {posts && posts.map((ele,index)=>{
                          
                             return <tr key={ele.id}>
                                         <td>{ele.id}</td>

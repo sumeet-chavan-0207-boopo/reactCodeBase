@@ -4,6 +4,7 @@ import validator from 'validator';
 import {fakeAuth} from '../../Auth/Auth';
 import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
+import {addUserDetails} from '../../Actions/LoginAction';
 
  class Login extends Component {
     constructor(props){
@@ -55,6 +56,11 @@ import { connect } from 'react-redux';
             fakeAuth.authenticate((isPassed)=>{
                
                 if(isPassed){
+                    this.props.addUserDetails({
+                        name:this.state.user_name,
+                        pass:this.state.user_pass
+                    })
+
                     this.props.history.push('/home')
                 }else{
                     this.setState({
@@ -104,4 +110,4 @@ import { connect } from 'react-redux';
         )
     }
 }
-export default withRouter(Login);
+export default withRouter(connect(null,{addUserDetails})(Login));

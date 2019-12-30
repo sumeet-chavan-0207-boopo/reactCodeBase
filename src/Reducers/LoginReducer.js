@@ -1,11 +1,18 @@
+import {ADD_USER_DETAILS} from '../Actions/types';
+
 const start_state={loggedin:false,user:{}};
 
-const LoginReducer=(initial_state=start_state,action)=>{
-    if(action.type=='LOGGED_IN'){
-        return {
-            loggedin:true,
-            user:action.user
-        }
+export const LoginReducer=(initial_state=start_state,action)=>{
+
+    switch(action.type){
+        case ADD_USER_DETAILS:
+            return{
+                loggedin:true,
+                user:action.payload
+            }
+         default:
+            return initial_state
+
     }
+ 
 }
-export default LoginReducer;

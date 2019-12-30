@@ -3,8 +3,7 @@ import Header from '../Header/Header';
 import Home from '../Home/Home';
 import Task from '../Task/Task';
 import User from '../User/User';
-import {fakeAuth} from '../../Auth/Auth';
-import {BrowserRouter,Route,Switch,Redirect} from 'react-router-dom';
+import {Route,Redirect} from 'react-router-dom';
 
 export default class Dashboard extends Component {
     render(props) {
@@ -30,20 +29,17 @@ export default class Dashboard extends Component {
 
 
 function PrivateRoute({ children, ...rest }) {
+  const isAuthenticated=sessionStorage.getItem("isAuthenticated");
+ 
+
     return (
       <Route
         {...rest}
         render={({ location }) =>
-          fakeAuth.isAuthenticated ? (
-            children
-          ) : (
-            <Redirect
-              to={{
-                pathname: "/",
-                state: { from: location }
-              }}
-            />
-          )
+        isAuthenticated==='true' ? 
+          (  children) 
+        : 
+          ( <Redirect to={{ pathname: "/",state: { from: location }}} /> )
         }
       />
     );
