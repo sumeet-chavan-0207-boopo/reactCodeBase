@@ -1,4 +1,4 @@
-import React,{useEffect,useState} from 'react';
+import React,{useEffect,useState,useRef} from 'react';
 import {useSelector,useDispatch} from 'react-redux';
 import { Button, Table } from 'react-bootstrap';
 import classes from  './Task.module.css';
@@ -9,6 +9,8 @@ export default function Task() {
     const [task_list,setTaskList]=useState([]);
     const [title_name,setTitleName]=useState([]);
     const [status,setStatus]=useState([]);
+    const input_title = useRef(null);
+    const input_status = useRef(null);
     const posts=useSelector(state=> state.posts.items)
     const dispatch=useDispatch();
 
@@ -43,6 +45,8 @@ export default function Task() {
       
     }
     const handleInsertion= ()=>{
+
+    
         
         const newtasklist=[...posts];
         const len=newtasklist.length;
@@ -71,10 +75,10 @@ export default function Task() {
 
     return (
         <div>
-            <div style={{height:'500px',overflowY:'scroll',padding:'5%'}}>
+            <div className={classes.task_container}>
                 <Table striped bordered hover>
                     <thead>
-                        <tr>
+                        <tr className={classes.task_tr}>
                             <th>ID</th>
                             <th>Title</th>
                             <th>Completed</th>
@@ -104,11 +108,13 @@ export default function Task() {
 
            <div className={classes.new_task}>          
                 <div>
-                <input onChange={handleTitleChange} type="text" placeholder="Enter title"></input>  
+                <input onChange={handleTitleChange} ref={input_title} type="text" placeholder="Enter title"></input>  
                 </div>
+             
                 <div className={classes.task_marg_tp_10}>      
-                    <input onChange={handleStatusChange} type="text" placeholder="Enter completed status (True/false)"></input> 
-                </div>      
+                    <input onChange={handleStatusChange} ref={input_status} type="text" placeholder="Enter status (True/false)"></input> 
+                </div>
+             
                 <Button className={classes.task_marg_tp_10} onClick={handleInsertion} variant="primary">ADD TASK</Button>
             </div>  
 

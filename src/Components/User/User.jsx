@@ -4,6 +4,7 @@ import { Button } from 'react-bootstrap';
 import classes from './User.module.css';
 import validator from 'validator';
 import {fakeAuth} from '../../Auth/Auth';
+import {changePassword} from '../../Actions/LoginAction';
 
 export default function User(props) {
 
@@ -12,7 +13,7 @@ export default function User(props) {
     const [passError,setPassError]=useState('');
     const [isPassChanged,setPassChangedMsg]=useState('');
     const user_details=useSelector(state=> state.login.user)
-   
+    const dispatch=useDispatch();
 
     const handlePasswordChange=()=>{
 
@@ -20,6 +21,10 @@ export default function User(props) {
             setPassError('New password cannot be blank')
         }else{
             localStorage.setItem("user_pass",newPassword);
+            dispatch(changePassword({
+                name:user_details.name,
+                pass:newPassword
+            }));
             setIsChangePass(false);
             setPassError('');
             setNewPassword('')
