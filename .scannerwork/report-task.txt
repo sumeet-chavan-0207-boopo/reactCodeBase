@@ -1,0 +1,6 @@
+projectKey=react_codebase
+serverUrl=https://code-review.btdevlabs.com
+serverVersion=8.1.0.31237
+dashboardUrl=https://code-review.btdevlabs.com/dashboard?id=react_codebase
+ceTaskId=AXAKBB_2Wu-TMaLRAroK
+ceTaskUrl=https://code-review.btdevlabs.com/api/ce/task?id=AXAKBB_2Wu-TMaLRAroK

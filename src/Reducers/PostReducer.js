@@ -4,12 +4,11 @@ const initial_state={
     items:[]
 }
 
-
 export const  PostReducer= (state=initial_state,action)=>{
-
     console.log(action)
     switch(action.type){
         case FETCH_POSTS:
+            console.log(action.payload)
             return{
                 items:action.payload 
             }
@@ -27,6 +26,5 @@ export const  PostReducer= (state=initial_state,action)=>{
             }
 
     }
-
 }
 

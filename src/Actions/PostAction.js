@@ -2,8 +2,7 @@ import {FETCH_POSTS,ADD_POST,DELETE_POST} from './types';
 
 
 export const fetchPosts=(no_data)=>dispatch=>{
-    console.log("actions")
-    fetch('http://jsonplaceholder.typicode.com/todos')
+     fetch('http://jsonplaceholder.typicode.com/todos')
     .then(data=>data.json())
     .then(datajson => {
        dispatch({

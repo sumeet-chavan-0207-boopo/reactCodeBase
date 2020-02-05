@@ -1,0 +1,4 @@
+{
+    "sonarHost": "https://code-review.btdevlabs.com",
+    "sonarProjectKey": "react_codebase"
+}

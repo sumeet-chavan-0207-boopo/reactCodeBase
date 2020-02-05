@@ -1,38 +1,61 @@
-export const fakeAuth = {
-  
-  
-    authenticate(cb,user_name,user_pass) {
-      const userName=localStorage.getItem("user_name");
-      const userPass=localStorage.getItem("user_pass");
-     
-      if(!userName && !userPass){
-      
-        localStorage.setItem("user_name","sam");
-        localStorage.setItem("user_pass","12345")
-        sessionStorage.setItem("isAuthenticated",true)
-       
-        setTimeout(cb(true), 100);
+import {GetRequestFunction,PostRequestFunction} from '../api/ApiHelper';
+import {getApiurl} from '../api/ApiKeys';
+import {getCookieFunction,flushCookieFunction} from '../Components/Services/CookieController';
 
-      }
-      else if(userName==user_name && userPass==user_pass){
-        
-        sessionStorage.setItem("isAuthenticated",true)
-        setTimeout(cb(true), 100);
 
-      }
-      else{
-     
-        setTimeout(cb(false), 100);
-      }
+export async function checkAuthentication(permission,isdashboard=false)
+{
+    let gettoken = getCookieFunction("token");
+    if(gettoken)
+    {
+        let param = {token : gettoken}
 
-    },
-    signout(cb) {
-      fakeAuth.isAuthenticated = false;
-      sessionStorage.setItem("isAuthenticated",false)
-      setTimeout(cb, 100);
-   
+        let url = getApiurl("getpermission");
+        let permissionList = await GetRequestFunction(url,{},param);
+        if(permissionList.success)
+        {
+             let permissionArray = permissionList.permissions;
+             if(permissionArray.includes(permission))
+             { 
+                return permissionArray;
+             }else
+             {
+                if(isdashboard)
+                {
+                   logoutWithToken();
+                }
+                else
+                {
+                   redirectToDashboard();
+                }
+             }
+        }else
+        {
+            logout();
+        }
+    }else
+    {
+       logout();
     }
-  
-};
+}
 
-export const isAuthenticated="isAuthenticated"
+function logout()
+{
+   flushCookieFunction('token');
+   window.location.href = "/"
+}
+
+
+export async function logoutWithToken()
+{
+   let gettoken = getCookieFunction("token");
+   let url = getApiurl("getpermission");
+   let head = {bearer : gettoken}
+   await PostRequestFunction(url,head,{});
+   logout()
+}
+
+function redirectToDashboard()
+{
+  window.location.href = "http://localhost:3000/task";
+}
