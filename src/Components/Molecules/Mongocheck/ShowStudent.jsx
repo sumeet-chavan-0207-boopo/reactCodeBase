@@ -32,7 +32,8 @@ class ShowStudent extends Component {
         this.token = getCookieFunction("token");
         if(this.token)
         {
-            this.permission = await checkAuthentication("create_student");
+            this.permission = await checkAuthentication("view_student");
+            console.log(this.permission)
             if(this.permission)
             {
                 this.reloadTable();
@@ -71,8 +72,6 @@ class ShowStudent extends Component {
     getParam = (pagenumber) =>{
         let orderby = this.state.orderby;
         let token = this.token;
-        // console.log(token)
-        //let token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZTIxN2E2MTc3MjU5MjBkMjQ5MzI0YTMiLCJpYXQiOjE1ODAxMTIzNTV9.TPeMdxZ0LeXqp_apEgO8CP51c-5WcgxnpVygTLzFh2I`;
         let returnObj = {token:token,limit:3,page:pagenumber,sort:orderby};
         return returnObj
     }
@@ -90,7 +89,6 @@ class ShowStudent extends Component {
     } 
 
     getSelectedData = async (id)=>{
-        //let token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZTIxN2E2MTc3MjU5MjBkMjQ5MzI0YTMiLCJpYXQiOjE1ODAxMTIzNTV9.TPeMdxZ0LeXqp_apEgO8CP51c-5WcgxnpVygTLzFh2I`;
         let token = this.token
         let url = getApiurl("viewstudent");
         let param = {token:token,_id:id}
@@ -135,10 +133,10 @@ class ShowStudent extends Component {
             name:stdname,
             class:stdclass
         }
-
+        console.log(data)
         let t = this.token
         let url = getApiurl("updatestudent");
-        let header = {bearer:t}
+        let header = {bearer:this.token}
         let stdinfo  = await PostRequestFunction(url,header,data);
         if(stdinfo.success)
         {
@@ -150,12 +148,11 @@ class ShowStudent extends Component {
     {
         let t = this.token
         let url = getApiurl("deletestudent");
-        let header = {bearer:t}
         let data = {
             _id:id,
             token:t,
         }
-        let dltdata =  await DeleteRequestFunction(url,header,data);
+        let dltdata =  await DeleteRequestFunction(url,{},data);
         if(dltdata.success)
         {
             if(this.state.searchMode)
@@ -312,7 +309,7 @@ class ShowStudent extends Component {
                             return <tr key={ele._id}>
                                         <td>{ele.name}</td>
                                         <td>{ele.class}</td>
-                                        <td><button onClick={this.permission.includes('update_student')?()=>this.getSelectedData(ele._id):null}>Update </button></td>
+                                        <td>{ele.isDeleted===false?<button onClick={this.permission.includes('update_student')?()=>this.getSelectedData(ele._id):null}>Update </button>:null}</td>
                                         <td>{ele.isDeleted===false?<button onClick={this.permission.includes('delete_student')?()=>this.deleteStudent(ele._id):null}>Delete</button>:null}</td>
                                    </tr>
 

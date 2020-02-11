@@ -78,14 +78,18 @@ class Login extends Component {
             }
 
             let createdStudent = await PostRequestFunction(url,{},registerparam);
-            if(createdStudent.success)
+            if(createdStudent)
             {
-                alert("Sucessful please login");
-                window.location.reload();
-            }else
-            {
-                this.showResponseError(createdStudent.errors)
+                if(createdStudent.success)
+                {
+                    alert("Sucessful please login");
+                    window.location.reload();
+                }else
+                {
+                    this.showResponseError(createdStudent.errors)
+                }
             }
+            
         }else
         {
 
@@ -116,12 +120,16 @@ class Login extends Component {
 
                 let loginuser = await PostRequestFunction(url,{},loginparam);
                 console.log(loginuser)
-                if(loginuser.success)
+                if(loginuser)
                 {
-                    let gettoken = loginuser.data;
-                    setCookieFunction("token",gettoken[0].token)
-                    this.props.history.push('/home')
+                    if(loginuser.success)
+                    {
+                        let gettoken = loginuser.data;
+                        setCookieFunction("token",gettoken[0].token)
+                        this.props.history.push('/task')
+                    }
                 }
+                
          }else
          {
             //this.validator.showMessages();

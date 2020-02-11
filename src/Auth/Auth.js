@@ -49,7 +49,7 @@ function logout()
 export async function logoutWithToken()
 {
    let gettoken = getCookieFunction("token");
-   let url = getApiurl("getpermission");
+   let url = getApiurl("logout");
    let head = {bearer : gettoken}
    await PostRequestFunction(url,head,{});
    logout()
@@ -57,5 +57,5 @@ export async function logoutWithToken()
 
 function redirectToDashboard()
 {
-  window.location.href = "http://localhost:3000/task";
+  window.location.href = "http://192.168.5.147:3000/task";
 }

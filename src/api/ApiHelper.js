@@ -8,11 +8,10 @@ export async function GetRequestFunction(apiurl,header={},parameter={})
 
     try {
 	    const data = await axios.get(apiurl,{ params: parameter},header);
-	    console.log(data)
 	    return data.data;
       }catch(error){
-	   	let { response}=error
-	   	let { data}=response
+	   	let  response = error && error.response
+	    let  data =response && response.data || [];
 	    return data;
      }
 }
@@ -23,29 +22,31 @@ export async function PostRequestFunction(apiurl,header={},data={})
 		 const getdata = await axios.post(apiurl,data,{
 	        headers: header,
 	    });
-		
+
 		return getdata.data;
 
+		}catch (error){
 
-	  	}catch (error){
-	  		let { response}=error
-	   		let { data}=response
-	    	return data;
+			let  response = error && error.response
+	   	    let  data =response && response.data || [];
+	   	    return data;
   		}
 } 
 
 export async function DeleteRequestFunction(apiurl,header={},data={})
 {
 	try{
+
 	const deletdata = await axios.delete(apiurl,{params:data},{
   		 headers: header
 	});
-
-	return deletdata.data;
+		return deletdata.data;
 
 	}catch (error){
-	  		console.log("error", error);
-    		return error;
+		
+		let  response = error && error.response
+	   	let  data =response && response.data || [];
+	   	return data;
     }
 } 
 
